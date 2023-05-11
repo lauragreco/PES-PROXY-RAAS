@@ -1,0 +1,25 @@
+### Get CHR, START BP and STOP BP for all genes in RAAS pathway
+
+# Load biomaRt package
+library(biomaRt)
+
+# Connect to Ensembl database
+ensembl <- useMart("ensembl")
+
+# Select the human dataset
+ensembl <- useDataset("hsapiens_gene_ensembl", mart = ensembl)
+
+# Create a vector of gene symbols
+genes <- c("CMA1", "CREB1", "ATF2", "ATF6B", "CREB3L4", "CTSG", "CYP11A1", "CYP11B2", "CYP21A2", "ACE", "CALML6", "AGT", "AGTR1", "AGTR2", "GNAQ", "HSD3B1", "HSD3B2", "ITPR1", "ITPR2", "ITPR3", "ATF1", "ATF4", "CALML5", "PLCB2", "CAMK1D", "CAMK1G", "REN", "CREB3L2", "STAR", "CALM1", "CALM2", "CALM3", "CALML3", "CAMK4", "CAMK2A", "CAMK2B", "CAMK2D", "CAMK2G", "CREB3L3", "CAMK1", "CREB3L1", "CALML4", "CREB5")
+
+# Get the CHR and BP for each gene
+gene_info <- getBM(attributes = c("chromosome_name", "start_position", "end_position", "external_gene_name"),
+                   filters = "external_gene_name",
+                   values = genes,
+                   mart = ensembl)
+
+# Rename the columns
+colnames(gene_info) <- c("CHR", "start_BP", "end_BP", "Gene")
+
+# Print the gene info
+gene_info
